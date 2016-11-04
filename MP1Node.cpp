@@ -6,7 +6,6 @@
  **********************************/
 
 #include <algorithm>
-#include <random>
 #include <assert.h>
 #include "MP1Node.h"
 /*
@@ -226,9 +225,6 @@ GossipMsg* MP1Node::createGossip(MsgTypes msgType, size_t max_nodes,
   vector<GossipEntry> *rand_vec) {
 
   vector<GossipEntry> mem_vec;
-  //      for (auto &m : members) {
-  //        log->LOG(&memberNode->addr, "Member:%s", m.first.str().c_str());
-  //      }
   for_each(members.begin(), members.end(),
       [&mem_vec] (const pair<NodeAddress,MembershipState>& m) {
       if (m.second.status == MembershipState::Status::Alive) {
@@ -242,11 +238,7 @@ GossipMsg* MP1Node::createGossip(MsgTypes msgType, size_t max_nodes,
   msg->from = memberNode->addr;
   msg->from_heartbeat = memberNode->heartbeat;
   msg->num_members = num_init_nodes;
-  //      auto engine = std::default_random_engine{};
   std::random_shuffle(mem_vec.begin(), mem_vec.end());
-  //      for (auto &m : mem_vec) {
-  //        log->LOG(&memberNode->addr, "MemberV2:%s", m.str().c_str());
-  //      }
   for(int i = 0; i < num_init_nodes; i++) {
     assert(!mem_vec[i].addr.IsZero());
     msg->members[i] = mem_vec[i];
@@ -258,15 +250,22 @@ GossipMsg* MP1Node::createGossip(MsgTypes msgType, size_t max_nodes,
 }
 
 void MP1Node::HandleMemberKnowledge(const NodeAddress& addr, long heartbeat) {
+  if (addr == memberNode->addr) {
+    return;
+  }
   auto it = members.find(addr);
   const int64_t curr = par->getcurrtime();
   if (it == members.end()) {
     Address mem_addr = addr;
     log->logNodeAdd(&memberNode->addr, &mem_addr);
+    //log->LOG(&memberNode->addr, "Adding %s with heartbeat %d", addr.str().c_str(), heartbeat);
     members.emplace(addr, MembershipState(MembershipState::Status::Alive, heartbeat, curr));
   } else if (heartbeat > it->second.heartbeat) {
+    //log->LOG(&memberNode->addr, "Updating %s heartbeat to %ld from %ld", addr.str().c_str(), heartbeat, it->second.heartbeat);
     it->second.heartbeat =heartbeat;
     it->second.local_heartbeat_time = curr;
+  } else {
+    //log->LOG(&memberNode->addr, "Skipping %s heartbeat %ld lower than %ld", addr.str().c_str(), heartbeat, it->second.heartbeat);
   }
 }
 
@@ -287,7 +286,8 @@ bool MP1Node::recvCallBack(void *env, char *data, int size ) {
       NodeAddress* addr = (NodeAddress*)(hdr + 1);
       assert(sizeof(Address) == sizeof(addr->addr));
       assert(sizeof(NodeAddress) == sizeof(Address));
-      long *pHeartbeat = (long*)(((char*)(hdr + 1)) + 1);
+      long *pHeartbeat = (long*)(((char*)(hdr + 1)) + 1 + sizeof(Address));
+      //log->LOG(&memberNode->addr, "Adding %s with heartbeat %d", addr->str().c_str(), *pHeartbeat);
       members.emplace(*addr, MembershipState(MembershipState::Status::Alive, *pHeartbeat, curr));
       Address addr_tmp = *addr;
       log->logNodeAdd(&memberNode->addr, &addr_tmp);
@@ -299,16 +299,11 @@ bool MP1Node::recvCallBack(void *env, char *data, int size ) {
     break;
     case JOINREP:
     {
-      memberNode->inGroup = 1;
+      memberNode->inGroup = true;
       GossipMsg *msg = (GossipMsg *) data;
       members.emplace(memberNode->addr, MembershipState(MembershipState::Status::Alive, memberNode->heartbeat, curr));
       for (int i = 0; i < msg->num_members; i++) {
-        if (msg->members[i].addr == memberNode->addr) {
-          continue;
-        }
-        members.emplace(msg->members[i].addr, MembershipState(MembershipState::Status::Alive,msg->members[i].heartbeat, curr));
-        Address member_addr = msg->members[i].addr;
-        log->logNodeAdd(&memberNode->addr, &member_addr);
+        HandleMemberKnowledge(msg->members[i].addr, msg->members[i].heartbeat);
       }
     }
     break;
@@ -335,7 +330,8 @@ bool MP1Node::recvCallBack(void *env, char *data, int size ) {
  *				Propagate your membership list
  */
 void MP1Node::nodeLoopOps() {
-
+  memberNode->heartbeat++;
+  //log->LOG(&memberNode->addr, "my heartbeat = %d", memberNode->heartbeat);
   const int64_t curr = par->getcurrtime();
   auto my_it = members.find(memberNode->addr);
   assert(my_it != members.end());
@@ -364,10 +360,13 @@ void MP1Node::nodeLoopOps() {
 
   vector<GossipEntry> rand_vec;
   size_t msgsize = 0;
-  GossipMsg *msg = createGossip(GOSSIP, 10, &msgsize, &rand_vec);
-  int start_index = rand_vec.size() - 5;
+  GossipMsg *msg = createGossip(GOSSIP, 5 /* number of member entries to transmit */, &msgsize, &rand_vec);
+  // Pick a different set of nodes. For it is not so useful to tell people what
+  // we know of them.
+  int start_index = max(0UL, rand_vec.size() - 2 /* number of nodes to transmit to */);
   for (size_t i = start_index; i < rand_vec.size(); i++) {
     Address a = rand_vec[i].addr;
+    //log->LOG(&memberNode->addr, "sending gossip to %s", rand_vec[i].addr.str().c_str());
     emulNet->ENsend(&memberNode->addr, &a, (char *)msg, msgsize);
   }
   free(msg);
