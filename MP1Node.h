@@ -8,6 +8,8 @@
 #ifndef _MP1NODE_H_
 #define _MP1NODE_H_
 
+#include <assert.h>
+#include <stdint.h>
 #include "stdincludes.h"
 #include "Log.h"
 #include "Params.h"
@@ -31,6 +33,7 @@
 enum MsgTypes{
     JOINREQ,
     JOINREP,
+    GOSSIP,
     DUMMYLASTMSGTYPE
 };
 
@@ -42,6 +45,42 @@ enum MsgTypes{
 typedef struct MessageHdr {
 	enum MsgTypes msgType;
 }MessageHdr;
+
+struct NodeAddress{
+  char addr[6];
+  NodeAddress() {}
+  NodeAddress(const Address& a) { memcpy(&addr, &a.addr, sizeof(addr));}
+  operator Address() const {Address a; memcpy(&a.addr, &addr, sizeof(addr)); return a;}
+  bool operator<(const NodeAddress& a2) const {
+    return strncmp(addr, a2.addr, sizeof(addr)) < 0;
+  }
+  bool IsZero() const {
+    int32_t *i = (int32_t *)addr;
+    int16_t *s = (int16_t *)(addr + 4);
+    return *i == 0 && *s == 0;
+  }
+  string str() const {
+    char buf[64];
+    snprintf(buf, sizeof(buf), "%d.%d.%d.%d:%d",  addr[0],addr[1],addr[2],
+                                 addr[3], *(short*)&addr[4]);
+    return string(buf);
+  }
+} __attribute__((packed));
+
+struct GossipEntry {
+  GossipEntry(const NodeAddress& addr, const long heartbeat) :
+    addr(addr), heartbeat(heartbeat) {}
+  NodeAddress addr;
+  long heartbeat;
+}__attribute__((packed));
+
+struct GossipMsg {
+  MessageHdr hdr;
+  NodeAddress from;
+  long from_heartbeat;
+  int num_members;
+  GossipEntry members[0];
+} __attribute__((packed));
 
 /**
  * CLASS NAME: MP1Node
@@ -55,6 +94,25 @@ private:
 	Params *par;
 	Member *memberNode;
 	char NULLADDR[6];
+  struct MembershipState {
+    enum class Status {Alive, Dead};
+//    MembershipState(Status status) : status(status) {}
+    MembershipState(Status status, long heartbeat, int64_t time ) :
+      status(status), heartbeat(heartbeat), local_heartbeat_time(time) {}
+
+    Status status;
+    long heartbeat = 0;
+    int64_t local_heartbeat_time = 0;
+  };
+
+  GossipMsg* createGossip(MsgTypes msgType, size_t max_nodes,
+    size_t *msgsize,
+    vector<GossipEntry> *rand_vec = NULL);
+  void HandleMemberKnowledge(const NodeAddress& addr, long heartbeat);
+
+  std::map<NodeAddress, MembershipState> members;
+
+  static constexpr int kTimeout = 10;
 
 public:
 	MP1Node(Member *, Params *, EmulNet *, Log *, Address *);

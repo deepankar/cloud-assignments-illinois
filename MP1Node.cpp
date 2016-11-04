@@ -5,11 +5,20 @@
  *				Definition of MP1Node class functions.
  **********************************/
 
+#include <algorithm>
+#include <random>
+#include <assert.h>
 #include "MP1Node.h"
-
 /*
  * Note: You can change/add any functions in MP1Node.{h,cpp}
  */
+
+bool operator==(const Address& a1, const NodeAddress& a2) {
+  return memcmp(a1.addr, a2.addr, sizeof(a1.addr)) == 0;
+}
+bool operator==(const NodeAddress& a1, const Address& a2) {
+  return memcmp(a1.addr, a2.addr, sizeof(a1.addr)) == 0;
+}
 
 /**
  * Overloaded Constructor of the MP1Node class
@@ -96,8 +105,8 @@ int MP1Node::initThisNode(Address *joinaddr) {
 	/*
 	 * This function is partially implemented and may require changes
 	 */
-	int id = *(int*)(&memberNode->addr.addr);
-	int port = *(short*)(&memberNode->addr.addr[4]);
+	//int id = *(int*)(&memberNode->addr.addr);
+	//int port = *(short*)(&memberNode->addr.addr[4]);
 
 	memberNode->bFailed = false;
 	memberNode->inited = true;
@@ -123,12 +132,14 @@ int MP1Node::introduceSelfToGroup(Address *joinaddr) {
     static char s[1024];
 #endif
 
+    const int64_t curr = par->getcurrtime();
     if ( 0 == memcmp((char *)&(memberNode->addr.addr), (char *)&(joinaddr->addr), sizeof(memberNode->addr.addr))) {
         // I am the group booter (first process to join the group). Boot up the group
 #ifdef DEBUGLOG
         log->LOG(&memberNode->addr, "Starting up group...");
 #endif
         memberNode->inGroup = true;
+        members.emplace(memberNode->addr, MembershipState(MembershipState::Status::Alive,memberNode->heartbeat, curr));
     }
     else {
         size_t msgsize = sizeof(MessageHdr) + sizeof(joinaddr->addr) + sizeof(long) + 1;
@@ -163,6 +174,7 @@ int MP1Node::finishUpThisNode(){
    /*
     * Your code goes here
     */
+   return 0;
 }
 
 /**
@@ -209,6 +221,55 @@ void MP1Node::checkMessages() {
     return;
 }
 
+GossipMsg* MP1Node::createGossip(MsgTypes msgType, size_t max_nodes,
+  size_t *msgsize,
+  vector<GossipEntry> *rand_vec) {
+
+  vector<GossipEntry> mem_vec;
+  //      for (auto &m : members) {
+  //        log->LOG(&memberNode->addr, "Member:%s", m.first.str().c_str());
+  //      }
+  for_each(members.begin(), members.end(),
+      [&mem_vec] (const pair<NodeAddress,MembershipState>& m) {
+      if (m.second.status == MembershipState::Status::Alive) {
+      mem_vec.emplace_back(m.first, m.second.heartbeat);
+      }
+      });
+  const int num_init_nodes = min(max_nodes, mem_vec.size());
+  *msgsize = sizeof(GossipMsg) + sizeof(GossipEntry)*num_init_nodes;
+  GossipMsg *msg = (GossipMsg*)malloc(*msgsize * sizeof(char));
+  msg->hdr.msgType = msgType;
+  msg->from = memberNode->addr;
+  msg->from_heartbeat = memberNode->heartbeat;
+  msg->num_members = num_init_nodes;
+  //      auto engine = std::default_random_engine{};
+  std::random_shuffle(mem_vec.begin(), mem_vec.end());
+  //      for (auto &m : mem_vec) {
+  //        log->LOG(&memberNode->addr, "MemberV2:%s", m.str().c_str());
+  //      }
+  for(int i = 0; i < num_init_nodes; i++) {
+    assert(!mem_vec[i].addr.IsZero());
+    msg->members[i] = mem_vec[i];
+  }
+  if (rand_vec) {
+    *rand_vec = move(mem_vec);
+  }
+  return msg;
+}
+
+void MP1Node::HandleMemberKnowledge(const NodeAddress& addr, long heartbeat) {
+  auto it = members.find(addr);
+  const int64_t curr = par->getcurrtime();
+  if (it == members.end()) {
+    Address mem_addr = addr;
+    log->logNodeAdd(&memberNode->addr, &mem_addr);
+    members.emplace(addr, MembershipState(MembershipState::Status::Alive, heartbeat, curr));
+  } else if (heartbeat > it->second.heartbeat) {
+    it->second.heartbeat =heartbeat;
+    it->second.local_heartbeat_time = curr;
+  }
+}
+
 /**
  * FUNCTION NAME: recvCallBack
  *
@@ -218,6 +279,52 @@ bool MP1Node::recvCallBack(void *env, char *data, int size ) {
 	/*
 	 * Your code goes here
 	 */
+  const MessageHdr* hdr = (const MessageHdr*)data;
+  const int64_t curr = par->getcurrtime();
+  switch (hdr->msgType) {
+    case JOINREQ:
+    {
+      NodeAddress* addr = (NodeAddress*)(hdr + 1);
+      assert(sizeof(Address) == sizeof(addr->addr));
+      assert(sizeof(NodeAddress) == sizeof(Address));
+      long *pHeartbeat = (long*)(((char*)(hdr + 1)) + 1);
+      members.emplace(*addr, MembershipState(MembershipState::Status::Alive, *pHeartbeat, curr));
+      Address addr_tmp = *addr;
+      log->logNodeAdd(&memberNode->addr, &addr_tmp);
+      size_t msgsize = 0;
+      GossipMsg *msg = createGossip(JOINREP, 5, &msgsize);
+      emulNet->ENsend(&memberNode->addr, &addr_tmp, (char *)msg, msgsize);
+      free(msg);
+    }
+    break;
+    case JOINREP:
+    {
+      memberNode->inGroup = 1;
+      GossipMsg *msg = (GossipMsg *) data;
+      members.emplace(memberNode->addr, MembershipState(MembershipState::Status::Alive, memberNode->heartbeat, curr));
+      for (int i = 0; i < msg->num_members; i++) {
+        if (msg->members[i].addr == memberNode->addr) {
+          continue;
+        }
+        members.emplace(msg->members[i].addr, MembershipState(MembershipState::Status::Alive,msg->members[i].heartbeat, curr));
+        Address member_addr = msg->members[i].addr;
+        log->logNodeAdd(&memberNode->addr, &member_addr);
+      }
+    }
+    break;
+    case GOSSIP:
+    {
+      GossipMsg *msg = (GossipMsg*)data;
+      HandleMemberKnowledge(msg->from, msg->from_heartbeat);
+      for(int i = 0; i < msg->num_members; i++) {
+        HandleMemberKnowledge(msg->members[i].addr, msg->members[i].heartbeat);
+      }
+    }
+    break;
+    default:
+    assert(0 && "unknown message type");
+  }
+  return true; //unused
 }
 
 /**
@@ -229,11 +336,43 @@ bool MP1Node::recvCallBack(void *env, char *data, int size ) {
  */
 void MP1Node::nodeLoopOps() {
 
-	/*
-	 * Your code goes here
-	 */
+  const int64_t curr = par->getcurrtime();
+  auto my_it = members.find(memberNode->addr);
+  assert(my_it != members.end());
+  my_it->second.heartbeat = memberNode->heartbeat;
+  my_it->second.local_heartbeat_time = curr;
 
-    return;
+  vector<NodeAddress> to_del;
+
+  for (auto& m : members) {
+    if (m.second.status == MembershipState::Status::Alive) {
+      if (curr - m.second.local_heartbeat_time > kTimeout) {
+        m.second.status = MembershipState::Status::Dead;
+      }
+    } else {
+      if (curr - m.second.local_heartbeat_time > 2*kTimeout) {
+        to_del.emplace_back(m.first);
+      }
+    }
+  }
+  for (auto& a : to_del) {
+    Address a_tmp = a;
+    log->logNodeRemove(&memberNode->addr, &a_tmp);
+    size_t erased = members.erase(a);
+    assert(erased);
+  }
+
+  vector<GossipEntry> rand_vec;
+  size_t msgsize = 0;
+  GossipMsg *msg = createGossip(GOSSIP, 10, &msgsize, &rand_vec);
+  int start_index = rand_vec.size() - 5;
+  for (size_t i = start_index; i < rand_vec.size(); i++) {
+    Address a = rand_vec[i].addr;
+    emulNet->ENsend(&memberNode->addr, &a, (char *)msg, msgsize);
+  }
+  free(msg);
+
+  return;
 }
 
 /**
@@ -267,6 +406,7 @@ Address MP1Node::getJoinAddress() {
  */
 void MP1Node::initMemberListTable(Member *memberNode) {
 	memberNode->memberList.clear();
+  members.clear();
 }
 
 /**
