@@ -198,6 +198,14 @@ void MP1Node::nodeLoop() {
     // ...then jump in and share your responsibilites!
     nodeLoopOps();
 
+    memberNode->memberList.clear();
+    for (auto& m : members) {
+      if (m.second.status == MembershipState::Status::Alive) {
+        MemberListEntry mb(m.first.id(), m.first.port(), m.second.heartbeat, m.second.local_heartbeat_time);
+        memberNode->memberList.emplace_back(mb);
+      }
+    }
+
     return;
 }
 

@@ -1,0 +1,1563 @@
+++ contains -v
+++ local e
+++ echo 0
++ verbose=0
++ SUCCESS=0
++ FAILURE=-1
++ RF=3
++ RFPLUSONE=4
++ CREATE_OPERATION='CREATE OPERATION'
++ CREATE_SUCCESS='create success'
++ GRADE=0
++ DELETE_OPERATION='DELETE OPERATION'
++ DELETE_SUCCESS='delete success'
++ DELETE_FAILURE='delete fail'
++ INVALID_KEY=invalidKey
++ READ_OPERATION='READ OPERATION'
++ READ_SUCCESS='read success'
++ READ_FAILURE='read fail'
++ QUORUM=2
++ QUORUMPLUSONE=3
++ UPDATE_OPERATION='UPDATE OPERATION'
++ UPDATE_SUCCESS='update success'
++ UPDATE_FAILURE='update fail'
++ echo ''
+
++ echo '############################'
+############################
++ echo ' CREATE TEST'
+ CREATE TEST
++ echo '############################'
+############################
++ echo ''
+
++ CREATE_TEST_STATUS=0
++ CREATE_TEST_SCORE=0
++ '[' 0 -eq 0 ']'
++ make
++ '[' 0 -ne 0 ']'
++ ./Application ./testcases/create.conf
++ echo 'TEST 1: Create 3 replicas of every key'
+TEST 1: Create 3 replicas of every key
+++ grep -i 'CREATE OPERATION' dbg.log
+++ wc -l
++ create_count='     100'
+++ grep -i 'create success' dbg.log
+++ wc -l
++ create_success_count='     400'
++ expected_count=400
++ '[' 400 -ne 400 ']'
+++ cut '-d ' -f7
+++ grep -i 'CREATE OPERATION' dbg.log
++ keys='1HYKz
+1XizM
+1tBzj
+2EIN1
+2Hr7V
+2Tyiu
+2d8PZ
+3L4W5
+4MC39
+5E1Q8
+5dijL
+5kHKv
+78j8w
+8US08
+A24Ru
+Bjtf2
+DmDQh
+FBqwu
+FEMLw
+Fnuub
+GmJWJ
+HLtMy
+HX4GE
+I1nIf
+I2oXt
+Iewlw
+KR0hY
+Kwr9x
+LhiSk
+MBEBt
+MTAmn
+MUAcI
+MVs0h
+N5Rrr
+OFlDb
+OVntN
+OXPed
+OjBt9
+OjmIV
+PEbOI
+PGdyf
+PMFpq
+PQHDV
+QQyhG
+QnD8K
+RmMLC
+RvKBp
+SXyKC
+TPnpG
+TkMmJ
+URbA5
+Vy2bf
+W245m
+WK4uI
+XLo7K
+XXt3o
+Y92v5
+ZtFxI
+bEkek
+bknl6
+bmeea
+cQNBJ
+ce2gW
+crvNG
+dvSqJ
+dvhtS
+e8Wks
+fJi0j
+fvO0b
+gH6ua
+gP27D
+gvrQk
+gze69
+hEo8C
+idb5S
+ih4DY
+jIs6r
+k44Qj
+lG8sN
+lfuQl
+lh094
+lkxn1
+m1YuT
+mgg6v
+ni3nI
+noogh
+pJzGO
+qg80N
+qt7VY
+s7Jws
+t3E28
+tSZqQ
+wDALz
+wJ6UW
+wNbfJ
+xLGeU
+xThgI
+xxCgu
+ysVaU
+zTGHQ'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep 1HYKz
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep 1XizM
+++ grep -i 'create success' dbg.log
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep 1tBzj
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep 2EIN1
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep 2Hr7V
+++ grep -i 'create success' dbg.log
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ wc -l
+++ grep 2Tyiu
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep 2d8PZ
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep 3L4W5
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep 4MC39
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep 5E1Q8
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep 5dijL
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep 5kHKv
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep 78j8w
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep 8US08
+++ grep -i 'create success' dbg.log
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep A24Ru
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep Bjtf2
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep DmDQh
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep FBqwu
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep FEMLw
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep Fnuub
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep GmJWJ
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep HLtMy
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep HX4GE
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep I1nIf
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep I2oXt
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep Iewlw
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep KR0hY
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep Kwr9x
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep LhiSk
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep MBEBt
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep MTAmn
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep MUAcI
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep MVs0h
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep N5Rrr
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep OFlDb
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep OVntN
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep OXPed
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep OjBt9
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep OjmIV
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep PEbOI
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep PGdyf
+++ wc -l
+++ grep -i 'create success' dbg.log
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep PMFpq
+++ grep -i 'create success' dbg.log
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep PQHDV
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep QQyhG
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep QnD8K
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep RmMLC
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep RvKBp
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep SXyKC
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep TPnpG
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep TkMmJ
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep URbA5
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep Vy2bf
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep W245m
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep WK4uI
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep XLo7K
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep XXt3o
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep Y92v5
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep ZtFxI
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep bEkek
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep bknl6
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep bmeea
+++ grep -i 'create success' dbg.log
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep cQNBJ
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep ce2gW
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep crvNG
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep dvSqJ
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep dvhtS
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep e8Wks
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep fJi0j
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep fvO0b
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep gH6ua
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep gP27D
+++ grep -i 'create success' dbg.log
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep gvrQk
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep gze69
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep hEo8C
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep idb5S
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep ih4DY
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep jIs6r
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep k44Qj
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep lG8sN
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep lfuQl
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep lh094
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep lkxn1
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep m1YuT
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep mgg6v
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep ni3nI
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep noogh
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep pJzGO
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep qg80N
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep qt7VY
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep s7Jws
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep t3E28
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep tSZqQ
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep wDALz
+++ grep -i 'create success' dbg.log
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep wJ6UW
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep wNbfJ
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep xLGeU
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep xThgI
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep xxCgu
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep ysVaU
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
+++ grep -i 'create success' dbg.log
+++ grep zTGHQ
+++ wc -l
++ key_create_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ '[' 0 -eq 0 ']'
++ CREATE_TEST_SCORE=3
++ echo 'TEST 1 SCORE..................: 3 / 3'
+TEST 1 SCORE..................: 3 / 3
++ GRADE=3
++ echo ''
+
++ echo '############################'
+############################
++ echo ' DELETE TEST'
+ DELETE TEST
++ echo '############################'
+############################
++ echo ''
+
++ DELETE_TEST1_STATUS=0
++ DELETE_TEST2_STATUS=0
++ DELETE_TEST1_SCORE=0
++ DELETE_TEST2_SCORE=0
++ '[' 0 -eq 0 ']'
++ make
++ '[' 0 -ne 0 ']'
++ ./Application ./testcases/delete.conf
++ echo 'TEST 1: Delete 3 replicas of every key'
+TEST 1: Delete 3 replicas of every key
+++ wc -l
+++ grep -i 'DELETE OPERATION' dbg.log
++ delete_count='      51'
++ valid_delete_count=50
++ expected_count=200
+++ grep -i 'delete success' dbg.log
+++ wc -l
++ delete_success_count='     200'
++ '[' '     200' -ne 200 ']'
++ keys=
+++ grep -i 'DELETE OPERATION' dbg.log
+++ cut '-d ' -f7
++ keys='2dd1M
+2kuO6
+47qc4
+5Kh6U
+5moo7
+5r6Nk
+6MxcB
+77xeb
+8DO3j
+8d4sC
+95upl
+9wdZg
+A8bjM
+AggaB
+BDFDz
+Bu4LU
+CfohD
+D1oOY
+ESM4o
+EUjQK
+EantJ
+Et8WQ
+ExwoU
+FHQCh
+FHb9y
+FSES7
+FfunG
+G8DWr
+GC9XS
+GX0d6
+GghUE
+HEqiq
+HTagY
+IcnAC
+IlyuH
+KSipy
+KeKWQ
+LcuZ2
+LqkAK
+LylJ7
+M7Ko6
+Nirri
+O2wTp
+OSdI3
+PBQSJ
+PXnKl
+PxHml
+Rlk4c
+Rn8VD
+SiOnn
+invalidKey'
++ for key in '${keys}'
++ '[' 2dd1M '!=' invalidKey ']'
+++ grep -i 'delete success' dbg.log
+++ grep 2dd1M
+++ wc -l
++ key_delete_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
++ '[' 2kuO6 '!=' invalidKey ']'
+++ grep -i 'delete success' dbg.log
+++ grep 2kuO6
+++ wc -l
++ key_delete_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
++ '[' 47qc4 '!=' invalidKey ']'
+++ grep -i 'delete success' dbg.log
+++ grep 47qc4
+++ wc -l
++ key_delete_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
++ '[' 5Kh6U '!=' invalidKey ']'
+++ grep -i 'delete success' dbg.log
+++ grep 5Kh6U
+++ wc -l
++ key_delete_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
++ '[' 5moo7 '!=' invalidKey ']'
+++ grep -i 'delete success' dbg.log
+++ grep 5moo7
+++ wc -l
++ key_delete_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
++ '[' 5r6Nk '!=' invalidKey ']'
+++ grep -i 'delete success' dbg.log
+++ grep 5r6Nk
+++ wc -l
++ key_delete_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
++ '[' 6MxcB '!=' invalidKey ']'
+++ grep -i 'delete success' dbg.log
+++ grep 6MxcB
+++ wc -l
++ key_delete_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
++ '[' 77xeb '!=' invalidKey ']'
+++ grep -i 'delete success' dbg.log
+++ grep 77xeb
+++ wc -l
++ key_delete_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
++ '[' 8DO3j '!=' invalidKey ']'
+++ grep -i 'delete success' dbg.log
+++ grep 8DO3j
+++ wc -l
++ key_delete_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
++ '[' 8d4sC '!=' invalidKey ']'
+++ grep -i 'delete success' dbg.log
+++ grep 8d4sC
+++ wc -l
++ key_delete_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
++ '[' 95upl '!=' invalidKey ']'
+++ grep -i 'delete success' dbg.log
+++ grep 95upl
+++ wc -l
++ key_delete_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
++ '[' 9wdZg '!=' invalidKey ']'
+++ grep -i 'delete success' dbg.log
+++ grep 9wdZg
+++ wc -l
++ key_delete_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
++ '[' A8bjM '!=' invalidKey ']'
+++ grep -i 'delete success' dbg.log
+++ grep A8bjM
+++ wc -l
++ key_delete_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
++ '[' AggaB '!=' invalidKey ']'
+++ grep -i 'delete success' dbg.log
+++ grep AggaB
+++ wc -l
++ key_delete_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
++ '[' BDFDz '!=' invalidKey ']'
+++ grep -i 'delete success' dbg.log
+++ grep BDFDz
+++ wc -l
++ key_delete_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
++ '[' Bu4LU '!=' invalidKey ']'
+++ grep -i 'delete success' dbg.log
+++ grep Bu4LU
+++ wc -l
++ key_delete_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
++ '[' CfohD '!=' invalidKey ']'
+++ grep CfohD
+++ grep -i 'delete success' dbg.log
+++ wc -l
++ key_delete_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
++ '[' D1oOY '!=' invalidKey ']'
+++ grep -i 'delete success' dbg.log
+++ grep D1oOY
+++ wc -l
++ key_delete_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
++ '[' ESM4o '!=' invalidKey ']'
+++ grep -i 'delete success' dbg.log
+++ grep ESM4o
+++ wc -l
++ key_delete_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
++ '[' EUjQK '!=' invalidKey ']'
+++ grep -i 'delete success' dbg.log
+++ grep EUjQK
+++ wc -l
++ key_delete_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
++ '[' EantJ '!=' invalidKey ']'
+++ grep -i 'delete success' dbg.log
+++ grep EantJ
+++ wc -l
++ key_delete_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
++ '[' Et8WQ '!=' invalidKey ']'
+++ grep -i 'delete success' dbg.log
+++ grep Et8WQ
+++ wc -l
++ key_delete_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
++ '[' ExwoU '!=' invalidKey ']'
+++ grep -i 'delete success' dbg.log
+++ grep ExwoU
+++ wc -l
++ key_delete_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
++ '[' FHQCh '!=' invalidKey ']'
+++ grep -i 'delete success' dbg.log
+++ grep FHQCh
+++ wc -l
++ key_delete_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
++ '[' FHb9y '!=' invalidKey ']'
+++ grep -i 'delete success' dbg.log
+++ grep FHb9y
+++ wc -l
++ key_delete_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
++ '[' FSES7 '!=' invalidKey ']'
+++ grep -i 'delete success' dbg.log
+++ grep FSES7
+++ wc -l
++ key_delete_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
++ '[' FfunG '!=' invalidKey ']'
+++ grep -i 'delete success' dbg.log
+++ grep FfunG
+++ wc -l
++ key_delete_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
++ '[' G8DWr '!=' invalidKey ']'
+++ grep G8DWr
+++ grep -i 'delete success' dbg.log
+++ wc -l
++ key_delete_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
++ '[' GC9XS '!=' invalidKey ']'
+++ grep -i 'delete success' dbg.log
+++ grep GC9XS
+++ wc -l
++ key_delete_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
++ '[' GX0d6 '!=' invalidKey ']'
+++ grep -i 'delete success' dbg.log
+++ grep GX0d6
+++ wc -l
++ key_delete_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
++ '[' GghUE '!=' invalidKey ']'
+++ grep -i 'delete success' dbg.log
+++ grep GghUE
+++ wc -l
++ key_delete_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
++ '[' HEqiq '!=' invalidKey ']'
+++ grep -i 'delete success' dbg.log
+++ grep HEqiq
+++ wc -l
++ key_delete_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
++ '[' HTagY '!=' invalidKey ']'
+++ grep -i 'delete success' dbg.log
+++ grep HTagY
+++ wc -l
++ key_delete_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
++ '[' IcnAC '!=' invalidKey ']'
+++ grep -i 'delete success' dbg.log
+++ grep IcnAC
+++ wc -l
++ key_delete_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
++ '[' IlyuH '!=' invalidKey ']'
+++ grep -i 'delete success' dbg.log
+++ grep IlyuH
+++ wc -l
++ key_delete_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
++ '[' KSipy '!=' invalidKey ']'
+++ grep -i 'delete success' dbg.log
+++ grep KSipy
+++ wc -l
++ key_delete_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
++ '[' KeKWQ '!=' invalidKey ']'
+++ grep -i 'delete success' dbg.log
+++ grep KeKWQ
+++ wc -l
++ key_delete_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
++ '[' LcuZ2 '!=' invalidKey ']'
+++ grep -i 'delete success' dbg.log
+++ grep LcuZ2
+++ wc -l
++ key_delete_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
++ '[' LqkAK '!=' invalidKey ']'
+++ grep -i 'delete success' dbg.log
+++ grep LqkAK
+++ wc -l
++ key_delete_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
++ '[' LylJ7 '!=' invalidKey ']'
+++ grep -i 'delete success' dbg.log
+++ grep LylJ7
+++ wc -l
++ key_delete_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
++ '[' M7Ko6 '!=' invalidKey ']'
+++ grep -i 'delete success' dbg.log
+++ grep M7Ko6
+++ wc -l
++ key_delete_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
++ '[' Nirri '!=' invalidKey ']'
+++ grep -i 'delete success' dbg.log
+++ grep Nirri
+++ wc -l
++ key_delete_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
++ '[' O2wTp '!=' invalidKey ']'
+++ grep -i 'delete success' dbg.log
+++ grep O2wTp
+++ wc -l
++ key_delete_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
++ '[' OSdI3 '!=' invalidKey ']'
+++ grep -i 'delete success' dbg.log
+++ grep OSdI3
+++ wc -l
++ key_delete_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
++ '[' PBQSJ '!=' invalidKey ']'
+++ grep -i 'delete success' dbg.log
+++ grep PBQSJ
+++ wc -l
++ key_delete_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
++ '[' PXnKl '!=' invalidKey ']'
+++ grep -i 'delete success' dbg.log
+++ grep PXnKl
+++ wc -l
++ key_delete_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
++ '[' PxHml '!=' invalidKey ']'
+++ grep PxHml
+++ grep -i 'delete success' dbg.log
+++ wc -l
++ key_delete_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
++ '[' Rlk4c '!=' invalidKey ']'
+++ grep -i 'delete success' dbg.log
+++ grep Rlk4c
+++ wc -l
++ key_delete_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
++ '[' Rn8VD '!=' invalidKey ']'
+++ grep -i 'delete success' dbg.log
+++ grep Rn8VD
+++ wc -l
++ key_delete_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
++ '[' SiOnn '!=' invalidKey ']'
+++ grep -i 'delete success' dbg.log
+++ grep SiOnn
+++ wc -l
++ key_delete_success_count='       4'
++ '[' '       4' -ne 4 ']'
++ for key in '${keys}'
++ '[' invalidKey '!=' invalidKey ']'
++ echo 'TEST 2: Attempt delete of an invalid key'
+TEST 2: Attempt delete of an invalid key
+++ grep -i 'delete fail' dbg.log
+++ grep invalidKey
+++ wc -l
++ delete_fail_count='       4'
++ '[' '       4' -ne 4 ']'
++ '[' 0 -eq 0 ']'
++ DELETE_TEST1_SCORE=3
++ '[' 0 -eq 0 ']'
++ DELETE_TEST2_SCORE=4
++ echo 'TEST 1 SCORE..................: 3 / 3'
+TEST 1 SCORE..................: 3 / 3
++ echo 'TEST 2 SCORE..................: 4 / 4'
+TEST 2 SCORE..................: 4 / 4
++ GRADE=6
++ GRADE=10
++ echo ''
+
++ echo '############################'
+############################
++ echo ' READ TEST'
+ READ TEST
++ echo '############################'
+############################
++ echo ''
+
++ READ_TEST1_STATUS=-1
++ READ_TEST1_SCORE=0
++ READ_TEST2_STATUS=-1
++ READ_TEST2_SCORE=0
++ READ_TEST3_PART1_STATUS=-1
++ READ_TEST3_PART1_SCORE=0
++ READ_TEST3_PART2_STATUS=-1
++ READ_TEST3_PART2_SCORE=0
++ READ_TEST4_STATUS=-1
++ READ_TEST4_SCORE=0
++ READ_TEST5_STATUS=-1
++ READ_TEST5_SCORE=0
++ '[' 0 -eq 0 ']'
++ make
++ '[' 0 -ne 0 ']'
++ ./Application ./testcases/read.conf
+++ grep -i 'READ OPERATION' dbg.log
+++ cut '-d ' -f3
+++ tr -s ']' ' '
+++ tr -s '[' ' '
+++ sort
++ read_operations=' 150 
+ 175 
+ 225 
+ 275 
+ 285 
+ 285 '
++ cnt=1
++ for time in '${read_operations}'
++ '[' 1 -eq 1 ']'
++ echo 'TEST 1: Read a key. Check for correct value being read at least in quorum of replicas'
+TEST 1: Read a key. Check for correct value being read at least in quorum of replicas
++ read_op_test1_time=150
+++ grep -i 'READ OPERATION' dbg.log
+++ grep 150
+++ cut '-d ' -f7
++ read_op_test1_key=0NBpi
+++ grep -i 'READ OPERATION' dbg.log
+++ grep 150
+++ cut '-d ' -f9
++ read_op_test1_value=value70
++ cnt=2
++ for time in '${read_operations}'
++ '[' 2 -eq 1 ']'
++ '[' 2 -eq 2 ']'
++ echo 'TEST 2: Read a key after failing a replica. Check for correct value being read at least in quorum of replicas'
+TEST 2: Read a key after failing a replica. Check for correct value being read at least in quorum of replicas
++ read_op_test2_time=175
+++ grep -i 'READ OPERATION' dbg.log
+++ grep 175
+++ cut '-d ' -f7
++ read_op_test2_key=0NBpi
+++ grep -i 'READ OPERATION' dbg.log
+++ grep 175
+++ cut '-d ' -f9
++ read_op_test2_value=value70
++ cnt=3
++ for time in '${read_operations}'
++ '[' 3 -eq 1 ']'
++ '[' 3 -eq 2 ']'
++ '[' 3 -eq 3 ']'
++ echo 'TEST 3 PART 1: Read a key after failing two replicas. Read should fail'
+TEST 3 PART 1: Read a key after failing two replicas. Read should fail
++ read_op_test3_part1_time=225
+++ grep -i 'READ OPERATION' dbg.log
+++ grep 225
+++ cut '-d ' -f7
++ read_op_test3_part1_key=0NBpi
+++ grep -i 'READ OPERATION' dbg.log
+++ grep 225
+++ cut '-d ' -f9
++ read_op_test3_part1_value=value70
++ cnt=4
++ for time in '${read_operations}'
++ '[' 4 -eq 1 ']'
++ '[' 4 -eq 2 ']'
++ '[' 4 -eq 3 ']'
++ '[' 4 -eq 4 ']'
++ echo 'TEST 3 PART 2: Read the key after allowing stabilization protocol to kick in. Check for correct value being read at least in quorum of replicas'
+TEST 3 PART 2: Read the key after allowing stabilization protocol to kick in. Check for correct value being read at least in quorum of replicas
++ read_op_test3_part2_time=275
+++ grep -i 'READ OPERATION' dbg.log
+++ grep 275
+++ cut '-d ' -f7
++ read_op_test3_part2_key=0NBpi
+++ grep -i 'READ OPERATION' dbg.log
+++ grep 275
+++ cut '-d ' -f9
++ read_op_test3_part2_value=value70
++ cnt=5
++ for time in '${read_operations}'
++ '[' 5 -eq 1 ']'
++ '[' 5 -eq 2 ']'
++ '[' 5 -eq 3 ']'
++ '[' 5 -eq 4 ']'
++ '[' 5 -eq 5 ']'
++ echo 'TEST 4: Read a key after failing a non-replica. Check for correct value being read at least in quorum of replicas'
+TEST 4: Read a key after failing a non-replica. Check for correct value being read at least in quorum of replicas
++ read_op_test4_time=285
++ read_op_test4_key=0NBpi
++ read_op_test4_value=value70
++ cnt=6
++ for time in '${read_operations}'
++ '[' 6 -eq 1 ']'
++ '[' 6 -eq 2 ']'
++ '[' 6 -eq 3 ']'
++ '[' 6 -eq 4 ']'
++ '[' 6 -eq 5 ']'
++ '[' 6 -eq 6 ']'
++ echo 'TEST 5: Attempt read of an invalid key'
+TEST 5: Attempt read of an invalid key
++ read_op_test5_time=285
++ cnt=7
++ read_test1_success_count=0
++ read_test2_success_count=0
++ read_test3_part2_success_count=0
++ read_test4_success_count=0
+++ grep -i 'read success' dbg.log
+++ grep 0NBpi
+++ grep value70
++ read_successes=' 9.0.0.0:0 [152] coordinator: read success at time 152, transID=9, key=0NBpi, value=value70
+ 9.0.0.0:0 [152] coordinator: read success at time 152, transID=9, key=0NBpi, value=value70
+ 6.0.0.0:0 [177] coordinator: read success at time 177, transID=10, key=0NBpi, value=value70'
++ '[' ' 9.0.0.0:0 [152] coordinator: read success at time 152, transID=9, key=0NBpi, value=value70
+ 9.0.0.0:0 [152] coordinator: read success at time 152, transID=9, key=0NBpi, value=value70
+ 6.0.0.0:0 [177] coordinator: read success at time 177, transID=10, key=0NBpi, value=value70' ']'
++ read success
+++ echo '9.0.0.0:0 [152] coordinator: read success at time 152, transID=9, key=0NBpi, value=value70'
+++ cut '-d ' -f2
+++ tr -s '[' ' '
+++ tr -s ']' ' '
++ time_of_this_success=' 152 '
++ '[' ' 152 ' -ge 150 -a ' 152 ' -lt 175 ']'
+++ expr 0 + 1
++ read_test1_success_count=1
++ read success
+++ echo '9.0.0.0:0 [152] coordinator: read success at time 152, transID=9, key=0NBpi, value=value70'
+++ cut '-d ' -f2
+++ tr -s '[' ' '
+++ tr -s ']' ' '
++ time_of_this_success=' 152 '
++ '[' ' 152 ' -ge 150 -a ' 152 ' -lt 175 ']'
+++ expr 1 + 1
++ read_test1_success_count=2
++ read success
+++ echo '6.0.0.0:0 [177] coordinator: read success at time 177, transID=10, key=0NBpi, value=value70'
+++ cut '-d ' -f2
+++ tr -s '[' ' '
+++ tr -s ']' ' '
++ time_of_this_success=' 177 '
++ '[' ' 177 ' -ge 150 -a ' 177 ' -lt 175 ']'
++ '[' ' 177 ' -ge 175 -a ' 177 ' -lt 225 ']'
+++ expr 0 + 1
++ read_test2_success_count=1
++ read success
++ read_test3_part1_fail_count=0
++ read_test5_fail_count=0
+++ grep -i 'read fail' dbg.log
++ read_fails=' 9.0.0.0:0 [151] server: read fail at time 151, transID=9, key=0NBpi
+ 8.0.0.0:0 [151] server: read fail at time 151, transID=9, key=0NBpi
+ 3.0.0.0:0 [151] server: read fail at time 151, transID=9, key=0NBpi
+ 9.0.0.0:0 [152] coordinator: read fail at time 152, transID=9, key=0NBpi
+ 9.0.0.0:0 [176] server: read fail at time 176, transID=10, key=0NBpi
+ 3.0.0.0:0 [176] server: read fail at time 176, transID=10, key=0NBpi
+ 3.0.0.0:0 [226] server: read fail at time 226, transID=11, key=0NBpi
+ 3.0.0.0:0 [276] server: read fail at time 276, transID=12, key=0NBpi
+ 5.0.0.0:0 [277] coordinator: read fail at time 277, transID=12, key=0NBpi
+ 3.0.0.0:0 [286] server: read fail at time 286, transID=7, key=0NBpi
+ 6.0.0.0:0 [287] coordinator: read fail at time 287, transID=11, key=invalidKey
+ 3.0.0.0:0 [287] coordinator: read fail at time 287, transID=7, key=0NBpi'
++ '[' ' 9.0.0.0:0 [151] server: read fail at time 151, transID=9, key=0NBpi
+ 8.0.0.0:0 [151] server: read fail at time 151, transID=9, key=0NBpi
+ 3.0.0.0:0 [151] server: read fail at time 151, transID=9, key=0NBpi
+ 9.0.0.0:0 [152] coordinator: read fail at time 152, transID=9, key=0NBpi
+ 9.0.0.0:0 [176] server: read fail at time 176, transID=10, key=0NBpi
+ 3.0.0.0:0 [176] server: read fail at time 176, transID=10, key=0NBpi
+ 3.0.0.0:0 [226] server: read fail at time 226, transID=11, key=0NBpi
+ 3.0.0.0:0 [276] server: read fail at time 276, transID=12, key=0NBpi
+ 5.0.0.0:0 [277] coordinator: read fail at time 277, transID=12, key=0NBpi
+ 3.0.0.0:0 [286] server: read fail at time 286, transID=7, key=0NBpi
+ 6.0.0.0:0 [287] coordinator: read fail at time 287, transID=11, key=invalidKey
+ 3.0.0.0:0 [287] coordinator: read fail at time 287, transID=7, key=0NBpi' ']'
++ read fail
+++ echo '9.0.0.0:0 [151] server: read fail at time 151, transID=9, key=0NBpi'
+++ cut '-d ' -f2
+++ tr -s '[' ' '
+++ tr -s ']' ' '
++ time_of_this_fail=' 151 '
++ '[' ' 151 ' -ge 225 -a ' 151 ' -lt 275 ']'
++ '[' ' 151 ' -ge 285 ']'
++ read fail
+++ echo '8.0.0.0:0 [151] server: read fail at time 151, transID=9, key=0NBpi'
+++ tr -s '[' ' '
+++ cut '-d ' -f2
+++ tr -s ']' ' '
++ time_of_this_fail=' 151 '
++ '[' ' 151 ' -ge 225 -a ' 151 ' -lt 275 ']'
++ '[' ' 151 ' -ge 285 ']'
++ read fail
+++ echo '3.0.0.0:0 [151] server: read fail at time 151, transID=9, key=0NBpi'
+++ cut '-d ' -f2
+++ tr -s '[' ' '
+++ tr -s ']' ' '
++ time_of_this_fail=' 151 '
++ '[' ' 151 ' -ge 225 -a ' 151 ' -lt 275 ']'
++ '[' ' 151 ' -ge 285 ']'
++ read fail
+++ echo '9.0.0.0:0 [152] coordinator: read fail at time 152, transID=9, key=0NBpi'
+++ cut '-d ' -f2
+++ tr -s '[' ' '
+++ tr -s ']' ' '
++ time_of_this_fail=' 152 '
++ '[' ' 152 ' -ge 225 -a ' 152 ' -lt 275 ']'
++ '[' ' 152 ' -ge 285 ']'
++ read fail
+++ echo '9.0.0.0:0 [176] server: read fail at time 176, transID=10, key=0NBpi'
+++ cut '-d ' -f2
+++ tr -s '[' ' '
+++ tr -s ']' ' '
++ time_of_this_fail=' 176 '
++ '[' ' 176 ' -ge 225 -a ' 176 ' -lt 275 ']'
++ '[' ' 176 ' -ge 285 ']'
++ read fail
+++ echo '3.0.0.0:0 [176] server: read fail at time 176, transID=10, key=0NBpi'
+++ cut '-d ' -f2
+++ tr -s '[' ' '
+++ tr -s ']' ' '
++ time_of_this_fail=' 176 '
++ '[' ' 176 ' -ge 225 -a ' 176 ' -lt 275 ']'
++ '[' ' 176 ' -ge 285 ']'
++ read fail
+++ echo '3.0.0.0:0 [226] server: read fail at time 226, transID=11, key=0NBpi'
+++ cut '-d ' -f2
+++ tr -s '[' ' '
+++ tr -s ']' ' '
++ time_of_this_fail=' 226 '
++ '[' ' 226 ' -ge 225 -a ' 226 ' -lt 275 ']'
+++ echo '3.0.0.0:0 [226] server: read fail at time 226, transID=11, key=0NBpi'
+++ grep 0NBpi
+++ wc -l
++ actual_key='       1'
++ '[' '       1' -eq 1 ']'
+++ expr 0 + 1
++ read_test3_part1_fail_count=1
++ read fail
+++ cut '-d ' -f2
+++ echo '3.0.0.0:0 [276] server: read fail at time 276, transID=12, key=0NBpi'
+++ tr -s '[' ' '
+++ tr -s ']' ' '
++ time_of_this_fail=' 276 '
++ '[' ' 276 ' -ge 225 -a ' 276 ' -lt 275 ']'
++ '[' ' 276 ' -ge 285 ']'
++ read fail
+++ echo '5.0.0.0:0 [277] coordinator: read fail at time 277, transID=12, key=0NBpi'
+++ cut '-d ' -f2
+++ tr -s '[' ' '
+++ tr -s ']' ' '
++ time_of_this_fail=' 277 '
++ '[' ' 277 ' -ge 225 -a ' 277 ' -lt 275 ']'
++ '[' ' 277 ' -ge 285 ']'
++ read fail
+++ echo '3.0.0.0:0 [286] server: read fail at time 286, transID=7, key=0NBpi'
+++ cut '-d ' -f2
+++ tr -s '[' ' '
+++ tr -s ']' ' '
++ time_of_this_fail=' 286 '
++ '[' ' 286 ' -ge 225 -a ' 286 ' -lt 275 ']'
++ '[' ' 286 ' -ge 285 ']'
+++ echo '3.0.0.0:0 [286] server: read fail at time 286, transID=7, key=0NBpi'
+++ grep invalidKey
+++ wc -l
++ actual_key='       0'
++ '[' '       0' -eq 1 ']'
++ read fail
+++ echo '6.0.0.0:0 [287] coordinator: read fail at time 287, transID=11, key=invalidKey'
+++ cut '-d ' -f2
+++ tr -s '[' ' '
+++ tr -s ']' ' '
++ time_of_this_fail=' 287 '
++ '[' ' 287 ' -ge 225 -a ' 287 ' -lt 275 ']'
++ '[' ' 287 ' -ge 285 ']'
+++ echo '6.0.0.0:0 [287] coordinator: read fail at time 287, transID=11, key=invalidKey'
+++ grep invalidKey
+++ wc -l
++ actual_key='       1'
++ '[' '       1' -eq 1 ']'
+++ expr 0 + 1
++ read_test5_fail_count=1
++ read fail
+++ cut '-d ' -f2
+++ tr -s '[' ' '
+++ echo '3.0.0.0:0 [287] coordinator: read fail at time 287, transID=7, key=0NBpi'
+++ tr -s ']' ' '
++ time_of_this_fail=' 287 '
++ '[' ' 287 ' -ge 225 -a ' 287 ' -lt 275 ']'
++ '[' ' 287 ' -ge 285 ']'
+++ echo '3.0.0.0:0 [287] coordinator: read fail at time 287, transID=7, key=0NBpi'
+++ grep invalidKey
+++ wc -l
++ actual_key='       0'
++ '[' '       0' -eq 1 ']'
++ read fail
++ '[' 2 -eq 3 -o 2 -eq 4 ']'
++ '[' 1 -eq 3 ']'
++ '[' 1 -eq 1 ']'
++ READ_TEST3_PART1_STATUS=0
++ '[' 0 -eq 3 -o 0 -eq 4 ']'
++ '[' 0 -eq 3 -o 0 -eq 4 ']'
++ '[' 1 -eq 3 -o 1 -eq 4 ']'
++ '[' -1 -eq 0 ']'
++ '[' -1 -eq 0 ']'
++ '[' 0 -eq 0 ']'
++ READ_TEST3_PART1_SCORE=9
++ '[' -1 -eq 0 ']'
++ '[' -1 -eq 0 ']'
++ '[' -1 -eq 0 ']'
++ echo 'TEST 1 SCORE..................: 0 / 3'
+TEST 1 SCORE..................: 0 / 3
++ echo 'TEST 2 SCORE..................: 0 / 9'
+TEST 2 SCORE..................: 0 / 9
++ echo 'TEST 3 PART 1 SCORE..................: 9 / 9'
+TEST 3 PART 1 SCORE..................: 9 / 9
++ echo 'TEST 3 PART 2 SCORE..................: 0 / 10'
+TEST 3 PART 2 SCORE..................: 0 / 10
++ echo 'TEST 4 SCORE..................: 0 / 6'
+TEST 4 SCORE..................: 0 / 6
++ echo 'TEST 5 SCORE..................: 0 / 3'
+TEST 5 SCORE..................: 0 / 3
+++ expr 10 + 0
++ GRADE=10
+++ expr 10 + 0
++ GRADE=10
+++ echo 10 9
+++ awk '{print $1 + $2}'
++ GRADE=19
+++ echo 19 0
+++ awk '{print $1 + $2}'
++ GRADE=19
+++ echo 19 0
+++ awk '{print $1 + $2}'
++ GRADE=19
+++ echo 19 0
+++ awk '{print $1 + $2}'
++ GRADE=19
++ exit

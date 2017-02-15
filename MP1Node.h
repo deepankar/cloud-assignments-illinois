@@ -59,6 +59,12 @@ struct NodeAddress{
     int16_t *s = (int16_t *)(addr + 4);
     return *i == 0 && *s == 0;
   }
+  int32_t id() const {
+    return *(int32_t*)addr;
+  }
+  int16_t port() const {
+    return *(int16_t *)(addr + 4);
+  }
   string str() const {
     char buf[64];
     snprintf(buf, sizeof(buf), "%d.%d.%d.%d:%d",  addr[0],addr[1],addr[2],
